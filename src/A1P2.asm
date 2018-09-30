@@ -26,17 +26,29 @@ mostrarMenu:
 
     mov ah,09
     mov dx,offset encabezado1
+    int 21h
     mov dx,offset encabezado2
+    int 21h
     mov dx,offset encabezado3
+    int 21h
     mov dx,offset encabezado4
+    int 21h
     mov dx,offset encabezado5
+    int 21h
     mov dx,offset encabezado6
+    int 21h
     mov dx,offset encabezado7
+    int 21h
     mov dx,offset encabezado8
+    int 21h
     mov dx,offset encabezado9
+    int 21h
     mov dx,offset encabezado10
+    int 21h
     mov dx,offset menu1
+    int 21h
     mov dx,offset menu2
+    int 21h
     mov dx,offset menu3
     int 21h
 
