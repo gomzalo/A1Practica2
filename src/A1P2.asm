@@ -23,28 +23,34 @@ encebazadoM3        db      "||-----------------------------------------------||
 encebazadoM4        db      "||===============================================||",13,10,"$"
 menuCargar          db      "1. Cargar archivo                                  ",13,10,"$"
 menuReporte         db      "2. Crear reporte                                   ",13,10,"$"
-menuSalir           db      "3. Salir                                           ",13,10,"$"
+menuResultados      db      "3. Mostrar menuResultados                          ",13,10,"$"
+menuSalir           db      "4. Salir                                           ",13,10,"$"
 menuFin             db      "___________________________________________________",13,10,"$"
 menuElige           db      10,13,"Bienvenido, elige una opcion...              ","$"
 menuOpcion          db      100 dup(0),"$"
-;                               LEER ARCHIVO
-
+;                               CARGAR ARCHIVO
+opcion1             db      "Ingresa la ruta del archivo (con extensipon .arq). ",13,10,"$"
+opcion11            db      "Ejemplo: %%archivo.arq%%                           ",13,10,"$"
+errorCarga1         db      "El archivo no existe                               ",13,10,"$"
+errorCarga2         db      ""
+;                               CREAR REPORTE
+opcion2             db      "Se generó el reporte.                              ",13,10,"$"
+;                               MOSTRAR RESULTADOS
+opcion3             db      "Los resultados, respecto a los datos son:          ",13,10,"$"
+;                               SALIR
 .code
 ;:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::        
 ;:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-main:
+main proc
     ; Inicializa DS
     mov ax, @data
     mov ds, ax
     
     call encabezadoMenu
     call menu
-    ;call limpiarPantalla
+    call limpiarPantalla
 
-    ; Finaliza programa
-    mov ax, 4c00h	;Function (Quit with exit code (EXIT))
-    int 21h			;Interruption DOS Functions
-
+    .exit
 ;:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::        
 ;:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -114,14 +120,35 @@ main:
         mov ah, 09h
         lea dx,menuOpcion
         int 21h
+        ; Verificando opción elegida
+        cmp dx,1
+        je esIgual
+
+        esIgual:
+            mov ah, 09
+            lea dx, opcion1
+            int 21h
+            lea dx, opcion11
+            int 21h
     menu endp
 ; ||------------------------------------------------------------------------------------||
 ; ||                                   Limpia pantalla                                  ||
 ; ||------------------------------------------------------------------------------------||
-    ; limpiarPantalla proc
-    ;     mov ah, 0
-    ;     mov al, 3
-    ;     int 10h
-    ;     ret
-    ; limpiarPantalla endp
+    limpiarPantalla proc
+        mov ah, 06h
+        mov al, 3
+        int 10h
+        ret
+    limpiarPantalla endp
+; ||------------------------------------------------------------------------------------||
+; ||                                   Salir                                            ||
+; ||------------------------------------------------------------------------------------||
+    salir proc
+        mov ax, 4c00h	;Function (Quit with exit code (EXIT))
+        int 21h			;Interruption DOS Functions
+    salir endp
+    
+;:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+;:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+main endp
 end main
